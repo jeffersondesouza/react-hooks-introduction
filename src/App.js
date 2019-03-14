@@ -1,52 +1,65 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import CharPicker from './components/CharPicker';
 import Character from './components/Character';
 
-class App extends Component {
-  state = {
-    selectedCharacter: 1,
-    side: 'light',
-    destroyed: false
+const App = (props) => {
+
+
+  const [counter, setCounter] = useState(1);
+
+  const [chosenSide, setChosenSide] = useState('light');
+
+  const [selectedCharacter, setSelectedCharacter] = useState(1);
+
+  const [destroyed, setDestroyed] = useState(false);
+
+
+  const sideHandler = side => {
+    setChosenSide(side);
   };
 
-  sideHandler = side => {
-    this.setState({ side: side });
-  };
-
-  charSelectHandler = event => {
+  const charSelectHandler = event => {
     const charId = event.target.value;
-    this.setState({ selectedCharacter: charId });
+    setSelectedCharacter(charId);
   };
 
-  destructionHandler = () => {
-    this.setState({ destroyed: true });
+  const destructionHandler = () => {
+    setDestroyed(true);
   };
 
-  render() {
-    let content = (
-      <React.Fragment>
-        <CharPicker
-          side={this.state.side}
-          selectedChar={this.state.selectedCharacter}
-          onCharSelect={this.charSelectHandler}
-        />
-        <Character selectedChar={this.state.selectedCharacter} />
-        <button onClick={this.sideHandler.bind(this, 'light')}>
-          Light Side
-        </button>
-        <button onClick={this.sideHandler.bind(this, 'dark')}>Dark Side</button>
-        {this.state.side === 'dark' && (
-          <button onClick={this.destructionHandler}>DESTROY!</button>
-        )}
-      </React.Fragment>
-    );
+  const handleSetCounter = () => {
+    setCounter(counter + 1);
 
-    if (this.state.destroyed) {
-      content = <h1>Total destruction!</h1>;
-    }
-    return content;
   }
+
+  const content = (
+    <React.Fragment>
+      <div>
+        <button onClick={handleSetCounter}>Counter</button>
+      </div>
+      <CharPicker
+        side={chosenSide}
+        selectedChar={selectedCharacter}
+        onCharSelect={charSelectHandler}
+        counter={counter}
+      />
+      <Character selectedChar={selectedCharacter} />
+      <button onClick={sideHandler.bind(this, 'light')}>
+        Light Side
+        </button>
+      <button onClick={sideHandler.bind(this, 'dark')}>Dark Side</button>
+      {chosenSide === 'dark' && (
+        <button onClick={destructionHandler}>DESTROY!</button>
+      )}
+    </React.Fragment>
+  );
+
+  if (destroyed) {
+    return <h1>Total destruction!</h1>;
+  }
+  return content;
+
 }
 
 export default App;
