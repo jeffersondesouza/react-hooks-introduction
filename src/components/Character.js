@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHttp } from './useHttp';
 
 import Summary from './Summary';
